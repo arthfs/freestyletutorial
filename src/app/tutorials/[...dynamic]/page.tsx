@@ -112,7 +112,7 @@ export default function Page({ params }: { params: Promise<{ dynamic?: string[] 
   }
 
   if (resolvedParams.dynamic.length === 2) {
-    const videoName = resolvedParams.dynamic[1];
+    const videoName = resolvedParams.dynamic[1].replace("%20"," ");
     return (
       <div>
 
@@ -172,7 +172,7 @@ return (
       <div key={index} className="cell">
       
         <Link href={`/tutorials/${tutorialType}/${video.name}`} passHref>
-          <div style={{display:'flex',justifyContent:'center',fontSize:'20px'}}>{video.name}</div>
+          <div style={{display:'flex',justifyContent:'center',fontSize:'20px'}}>{video.name.charAt(0).toUpperCase()+video.name.slice(1)}</div>
             {video.url && (
               <Image 
                 src={video.url} 
@@ -206,7 +206,7 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
     setAnchorEl(null);
   };
 
-  const pathname = path;
+  var pathname = path;
   const tutorial_type = path.split('/')[0].slice(0, 1).toUpperCase() + path.split('/')[0].slice(1);
   const [comment, setComment] = useState('');
   const firestore_path = pathname.split('/').slice(0, 2).join('/') + '/' + pathname.split('/').slice(2).join('-');
@@ -228,6 +228,8 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
   const updateEditing = (newValue: string) => { setEditing(newValue) };
   
   const getdata = async (pathname: string) => {
+   
+
     const firestore_path = 'tutorials/' + pathname.split('/')[0] + '-' + tutorial;
     const document = doc(firestore_reference, `${firestore_path}`);
     const comments_reference = collection(firestore_reference, `${firestore_path}/comments`);
@@ -236,18 +238,20 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
       .map((f) => ({ ...f.data(), id: f.id } as Comment));
     
     const data = (await getDoc(document)).data();
+   
     return { 
       ...data, 
       comments: [...comments], 
-      path: `gs://${process.env.NEXT_PUBLIC_STORAGE_BUCKET}/tutorials/${pathname}.mp4` 
+      path: `gs://${process.env.NEXT_PUBLIC_STORAGE_BUCKET}/tutorials/${pathname.replace("%20"," ")}.mp4` 
     };
   };
-
+const video_name = pathname.replace("%20"," ");
   const updatelike = (field: string) => {
-    const video_name = pathname;
+    
+    //console.log(data['path'])
     const ref_user = doc(firestore_reference, `/users/${user.id}`);
 
-    const ref_video = doc(firestore_reference,`tutorials/${pathname.split('/').slice(0, 2).join('-')}` );
+    const ref_video = doc(firestore_reference,`tutorials/${video_name.split('/').slice(0, 2).join('-')}` );
     
     if (field === 'like') {
       const liked = user.data().liked.includes(video_name);
@@ -286,8 +290,11 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
   useEffect(() => {
 //    console.log(user.data().liked,pathname)
     getdata(pathname).then((value) => {
+
+      //value['path'] = value['path'].replace("%20"," ")
       
-      setData(value);
+      setData({...data,...value});
+      //console.log(value['path'])
       const reference = ref(storage_reference, value['path']);
       getDownloadURL(reference).then((videourl) => {
         setUrl(videourl);
@@ -334,7 +341,7 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
       
       await deleteDoc(comment_reference);
       const updatedData = await getdata(pathname);
-      setData(updatedData);
+      setData({...data,...updatedData});
       handleClose();
     } catch (e) {
       console.error("Error deleting comment:", e);
@@ -349,27 +356,35 @@ if (loading || status.localeCompare('loading')==0) {
 if (!user || !user.id) {
   return <div>Please sign in to view this content.</div>;
 }
+
   return data.likes >= 0 ? (
     <div className='main'>
+       
       <div className='title'> {tutorial_type} trick</div>
+      
       <div className='content'>
+        
         <div className='left'>
-          <div className='lefttitle'> {tutorial}</div>
+          
+          <div className='lefttitle'> {tutorial.charAt(0).toUpperCase()+tutorial.slice(1)}</div>
           {url && (
             <div className='video'>
               <video style={{ height: '400px', width:'100%', objectFit:'cover' }} controls src={url}></video>
             </div>
           )}
+          
           <div className='buttons'  style={{ display: 'flex', flexDirection: 'row', width:'100%' }}>
+            
             <div style={{display:'flex',flexDirection:'row' ,alignItems:'center'}}>
-              {data.likes > 0 && <h1 style={{ fontSize: '20px', marginRight:'2px' }}> {data.likes} </h1>}
-              <div onClick={() => { updatelike('like') }}>
+              {data.likes >= 0 && <h1 style={{ fontSize: '20px', marginRight:'2px' }}> {data.likes} </h1>}
+              <div onClick={()=> updatelike('like')}>
                 { 
-                  user.data().liked.includes(pathname) ?
-                  <FavoriteIcon style={{color:'red'}} fontSize='large' /> :
+                  user.data().liked.includes(video_name) ?
+                  <FavoriteIcon  style={{color:'red'}} fontSize='large' /> :
                   <FavoriteBorderIcon fontSize='large' />
                   
                 }
+                
               </div>
               
             </div>
@@ -377,7 +392,7 @@ if (!user || !user.id) {
             <div onClick={() => { updatelike('bookmark') }}>
               {
                 
-                user.data().bookmarked.includes(pathname) ?
+                user.data().bookmarked.includes(video_name) ?
                 <BookmarkIcon fontSize='large' /> :
                 <BookmarkBorderIcon fontSize='large' />
                 
@@ -387,17 +402,20 @@ if (!user || !user.id) {
              <div  onClick={() => { updatelike('complete') }}>
               {
                 
-                user.data().completed.includes(pathname) ?
+                user.data().completed.includes(video_name) ?
                 <CheckCircleIcon style={{color:'green'}} fontSize='large' /> :
                 < CheckCircleOutlineIcon fontSize='large' />
                 
               }
             </div>
+           
 
            {// <ShareIcon fontSize='large'></ShareIcon> 
            }
           </div>
+          
         </div>
+      
         {
 /*
         <div className='right'>
@@ -534,10 +552,10 @@ if (!user || !user.id) {
                       firestore_reference,
                       `tutorials/${firestore_path.replaceAll('/', '-').slice(0, firestore_path.replaceAll('/', '-').length - 1)}/comments`
                     );
-                    var months = {'January':'01', 'February':'02', 'March':'03', 
+                    var months :{ [key:string]:string}  = {'January':'01', 'February':'02', 'March':'03', 
                       'April':'04', 'May':'05', 'June':'06', 'July':'07', 'August':'08', 'September':'09', 'October':'10', 'November':'11', 'December':'12'};
-                    var date = new Date().toString().split(' ').slice(0, -4)
-                    date =`${months[date[1]]}/${date[2]}/${date[3]} ${date[4].split(':').slice(0,2).join(':')}`
+                    var temp = new Date().toString().split(' ').slice(0, -4)
+                    var date =`${months[temp[1]]}/${temp[2]}/${temp[3]} ${temp[4].split(':').slice(0,2).join(':')}`
                      
                     
                     await addDoc(comments_reference, {
@@ -549,7 +567,7 @@ if (!user || !user.id) {
                     });
                     setComment('');
                     const updatedData = await getdata(pathname);
-                    setData(updatedData);
+                    setData({...data,...updatedData});
                   } catch (e) {
                     console.error("Error adding comment:", e);
                   }
