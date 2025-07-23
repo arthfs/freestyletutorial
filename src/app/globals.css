@@ -2,20 +2,376 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+.title
+{
+  font-size: 40px;
+  align-self: center;
+  margin : 10px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.pagetitle{
+  font-size:30px;
+  justify-content: center;
+  width:100%;
+  display: flex;
+  margin-bottom: 20px;
+}
+.main
+{
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  //background-color: gray;
+
+ 
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+.left {
+  width:40%;
+  background-color: white;
+  height: 80%;
+  margin-left:20px;
+  display: flex;
+  align-self: center;
+  flex-direction: column;
+ 
+}
+.advice{
+  font-size: 18px;
+  font-style: italic;
+  margin-bottom: 20px;
+}
+.content{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  column-gap: 40px;
+  height: 100%;
+ 
+}
+
+.right
+{ 
+  flex-grow: 1;
+  background-color: yellow;
+  height: 90%;
+  margin-right:20px;
+  padding:10px;
+
+}
+
+.lefttitle,.righttitle{
+  justify-content: center;
+  width: 100%;
+  display: flex;
+  
+  font-size: 20px;
+}
+
+.video
+{
+  border-style: solid ;
+  border-color: black;
+  border-width: 6px;
+  flex-grow: 1;
+}
+
+.buttons
+{
+  margin: 5px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  
+
+}
+
+.date
+{
+  font-size: 15px;
+  font-style: italic;
+}
+
+.inputt
+{
+  padding: 2px;
+  width:70%;
+  height: 40px;
+
+ resize: none;
+}
+
+.cell {
+ 
+  height: 300px;
+  width: 300px; /* Take full width of grid column */
+  position: relative; /* Needed for absolute positioning */
+  overflow: hidden; /* Hide anything that overflows */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(85, 66, 161, 0.1);
+  transition: all 0.3s ease;
+  border: 20px;
+  border-color: red;
+ 
+
+  
+}
+.cell:hover{
+  width : 350px;
+  border: 5px;
+  border-color: rgb(36, 70, 218);
+  border-style: solid;
+  transition: all 0.3s ease;
+ 
+ 
+}
+
+
+.cell .name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 10px;
+  color:white;
+  z-index: 2; /* Make sure text appears above image */
+}
+
+.cell img {
+  width: 100%;
+  height: 80%;
+  object-fit: cover;
+
+}
+.name
+{
+  border-style: solid;
+  border-width: 2px;
+  border-color: black;
+  text-align: center;
+}
+
+.grid{
+ 
+  height: fit-content;
+  display: grid;
+  grid-template: "a a a";
+  column-width: 300px;
+  
+  row-gap: 40px;
+  column-gap: 20px;
+  flex-grow: 1;
+  margin:20px;
+  padding: 20px;
+  justify-content: space-around;
+}
+
+.test {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.commentsection{
+  margin-top: 100px;
+  width: 80%;
+  margin-bottom: 40px;
+ 
+}
+.bottomtitle{
+  justify-content: center;
+  display: flex;
+  margin-bottom: 10px;
+  font-size: 40px;
+  
+}
+.wrapper{
+  width:100%;
+  display: flex;
+  justify-content: center;
+ 
+  
+  text-align: end;
+}
+
+.settingsform{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+  row-gap: 20px;
+  align-items: center;
+}
+
+
+.formcontainer{
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  row-gap: 20px;
+  align-items: center;
+  width:100%;
+}
+
+.settingsformfield,.buttons{
+  display: flex;
+ 
+  column-gap: 50px;
+  flex-direction: row;
+  justify-content:space-between;
+  width:35%;
+ 
+  height: 40px;
+}
+
+.inputwrapper{
+   background-color: red;
+   display: flex;
+   justify-content: end;
+   flex-direction: row;
+ 
+   
+  
+}
+
+.profilepicture {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%; /* Makes div circular */
+  overflow: hidden; /* Crops image to div shape */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-width: 2px;
+  border-style: solid;
+  border-color: black;
+  transition: transform 0.3s ease;
+
+}
+
+.profilepicture:hover{
+ transform: scale(1.5);
+}
+
+.settingsprofilepicture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Important: makes image fill the container */
+}
+
+.bookmarkscontainer{
+display: flex;
+flex-direction: column;
+row-gap: 40px;
+align-items: center;
+width: 100%;
+
+
+}
+
+.cell1{
+  height: 400px;
+  width: 400px;
+  background-color: yellow;
+  border-width: 2px;
+  border-color: aqua;
+  border-style: solid;
+}
+
+.test2{
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
+.homepage{
+ background-image: url('/background.webp');
+
+  background-size:cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  overflow: hidden;
+
+}
+
+.loginpage {
+  background-image: url('/bck.jpg');
+
+  background-size:cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  overflow: hidden;
+  
+}
+.loginsection{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+ 
+  
+}
+
+.loginbutton 
+{
+  display: flex;
+  flex-direction: row;
+  border: 5px;
+  width:250px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+  column-gap: 20px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 40px;
+  border-style: solid;
+   background-color: white;
+}
+
+.tricks{
+
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  font-size: 20px;
+}
+
+.trick {
+  display:flex;
+  flex-direction:row;
+  column-gap:10px;
+  width:70%;
+  background-color:rgb(192, 254, 254);
+  justify-content: space-between;
+  align-self:center;
+}
+
+.convo {
+
+  background-color: gainsboro;
+  height: 500px;
+  width:500px;
+  scroll-behavior: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.bottom {
+  
+  
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.coachingcontent 
+{ 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+
 }
