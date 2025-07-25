@@ -15,7 +15,7 @@ export default function Progress() {
  useEffect(()=>{
     if (!loading)
     {   const reference = collection(firestore_reference, '/tutorials')
-   
+        console.log(user._document.data.value.mapValue.fields.name)
         const reference_user = doc(firestore_reference,`/users/${user.id}`)
         getDoc(reference_user).then((snapshot)=>{
             if (snapshot.exists())

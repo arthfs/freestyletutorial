@@ -80,7 +80,6 @@ export default function Page({ params }: { params: Promise<{ dynamic?: string[] 
   const [resolvedParams, setResolvedParams] = useState<{ dynamic?: string[] } | null>(null);
  
   useEffect(() => {
-  
     params.then((resolved) => {
       setResolvedParams(resolved);
     });
@@ -105,7 +104,6 @@ export default function Page({ params }: { params: Promise<{ dynamic?: string[] 
   if (resolvedParams.dynamic.length === 1) {
     return (
       <div className="test">
-
         <TricksGrid tutorialType={tutorialType} />
       </div>
     );
@@ -115,7 +113,6 @@ export default function Page({ params }: { params: Promise<{ dynamic?: string[] 
     const videoName = resolvedParams.dynamic[1].replace("%20"," ");
     return (
       <div>
-
         <Tutorial_page tutorial={videoName} path={resolvedParams!.dynamic.join('/')} />
       </div>
     );
@@ -139,8 +136,6 @@ function TricksGrid({ tutorialType }: { tutorialType: string }) {
 
   useEffect(() => {
     const fetchTricks = async () => {
-     // console.log(storage_reference)
-    
       const reference = ref(storage_reference, `/tutorials/${tutorialType}`);
       const files = await listAll(reference);
       
@@ -148,7 +143,6 @@ function TricksGrid({ tutorialType }: { tutorialType: string }) {
         files.items
           .filter(item => item.name.endsWith('.mp4'))
           .map(async (video) => {
-          
             const thumbPath = `/tutorials/${tutorialType}/${video.name.split('.')[0]}.png`;
             const url = await getThumbnail(thumbPath).catch(() => "");
             return {
@@ -164,34 +158,32 @@ function TricksGrid({ tutorialType }: { tutorialType: string }) {
     fetchTricks();
   }, [tutorialType]);
 
-return (
-  <>
-  <div style={{fontSize:'35px',display:'flex',justifyContent:'center'}}>{`${tutorialType.slice(0,1).toUpperCase()+tutorialType.slice(1)} Tutorials`}</div>
-  <div className="grid">
-    {tricks.map((video, index) => (
-      <div key={index} className="cell">
-      
-        <Link href={`/tutorials/${tutorialType}/${video.name}`} passHref>
-          <div style={{display:'flex',justifyContent:'center',fontSize:'20px'}}>{video.name.charAt(0).toUpperCase()+video.name.slice(1)}</div>
-            {video.url && (
-              <Image 
-                src={video.url} 
-                width={200}
-                height={200}
-                // This makes the image fill the container
-                objectFit="cover"
-                alt={`${video.name} thumbnail`}
-                quality={80}  // Optimize image loading
-              />
-            )}
-            
-        
-        </Link>
+  return (
+    <>
+      <div style={{fontSize:'35px',display:'flex',justifyContent:'center'}}>{`${tutorialType.slice(0,1).toUpperCase()+tutorialType.slice(1)} Tutorials`}</div>
+      <div className="grid">
+        {tricks.map((video, index) => (
+          <div key={index} className="cell">
+            <Link href={`/tutorials/${tutorialType}/${video.name}`} passHref>
+              <div style={{display:'flex',justifyContent:'center',fontSize:'20px'}}>{video.name.charAt(0).toUpperCase()+video.name.slice(1)}</div>
+                {video.url && (
+                  <Image 
+                    src={video.url} 
+                    width={200}
+                    height={200}
+                    objectFit="cover"
+                    alt={`${video.name} thumbnail`}
+                    quality={80}
+                  />
+                )}
+            </Link>
+          </div>
+        ))}
       </div>
-    ))}
-  </div>
-  </>
-);}
+    </>
+  );
+}
+
 function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [selectedComment, setSelectedComment] = useState<Comment | null>(null);
@@ -220,21 +212,19 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
     comments: [],
   });
 
-  const { user,loading } = getcontext();
-  const {status} = useSession()
+  const { user, loading } = getcontext();
+  const { status } = useSession();
   const [editing, setEditing] = useState('');
   const [comments, setComments] = useState<Comment[]>([]);
 
   const updateEditing = (newValue: string) => { setEditing(newValue) };
   
   const getdata = async (pathname: string) => {
-   
-
     const firestore_path = 'tutorials/' + pathname.split('/')[0] + '-' + tutorial;
     const document = doc(firestore_reference, `${firestore_path}`);
     const comments_reference = collection(firestore_reference, `${firestore_path}/comments`);
     const comments = (await getDocs(comments_reference)).docs
-      .filter((doc) => doc.data().comment  !=null)
+      .filter((doc) => doc.data().comment != null)
       .map((f) => ({ ...f.data(), id: f.id } as Comment));
     
     const data = (await getDoc(document)).data();
@@ -245,12 +235,11 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
       path: `gs://${process.env.NEXT_PUBLIC_STORAGE_BUCKET}/tutorials/${pathname.replace("%20"," ")}.mp4` 
     };
   };
-const video_name = pathname.replace("%20"," ");
-  const updatelike = (field: string) => {
-    
-    //console.log(data['path'])
-    const ref_user = doc(firestore_reference, `/users/${user.id}`);
 
+  const video_name = pathname.replace("%20"," ");
+  
+  const updatelike = (field: string) => {
+    const ref_user = doc(firestore_reference, `/users/${user.id}`);
     const ref_video = doc(firestore_reference,`tutorials/${video_name.split('/').slice(0, 2).join('-')}` );
     
     if (field === 'like') {
@@ -260,7 +249,7 @@ const video_name = pathname.replace("%20"," ");
         updateDoc(ref_video, { 'likes': data.likes + 1 });
       } else {
         updateDoc(ref_user, { 'liked': arrayRemove(video_name) });
-        updateDoc(ref_video, { 'likes': data.likes>0? data.likes - 1:0 });
+        updateDoc(ref_video, { 'likes': data.likes > 0 ? data.likes - 1 : 0 });
       }
     } else if (field === 'bookmark') {
       const bookmarked = user.data().bookmarked.includes(video_name);
@@ -269,9 +258,7 @@ const video_name = pathname.replace("%20"," ");
       } else {
         updateDoc(ref_user, { 'bookmarked': arrayRemove(video_name) });
       }
-    }
-
-    else if (field === 'complete') {
+    } else if (field === 'complete') {
       const completed = user.data().completed.includes(video_name);
       if (!completed) {
         updateDoc(ref_user, { 'completed': arrayUnion(video_name) });
@@ -279,54 +266,70 @@ const video_name = pathname.replace("%20"," ");
         updateDoc(ref_user, { 'completed': arrayRemove(video_name) });
       }
     }
-    
-      
   };
 
+  // Only set comments from data.comments on initial load, not on every change
   useEffect(() => {
-    setComments(data.comments);
-  }, [data.comments]);
+    if (data.comments.length > 0 && comments.length === 0) {
+      setComments(data.comments);
+    }
+  }, [data.comments, comments.length]);
 
+  // Separate the initial data loading from comment-triggered updates
   useEffect(() => {
-//    console.log(user.data().liked,pathname)
     getdata(pathname).then((value) => {
-
-      //value['path'] = value['path'].replace("%20"," ")
-      
-      setData({...data,...value});
-      //console.log(value['path'])
+      setData(prevData => ({...prevData, ...value}));
       const reference = ref(storage_reference, value['path']);
       getDownloadURL(reference).then((videourl) => {
         setUrl(videourl);
       });
     });
-  }, [comment, user.data().liked]);
+  }, [pathname, user.data().liked]); // Removed 'comment' from dependencies
 
   const handleEditComment = (comment: Comment) => {
+    // Set the editing text to the current comment text
     setEditing(comment.comment);
-    setComments(comments.map(c => 
-      c.id === comment.id ? { ...c, editing: true } : c
+    
+    // Update the comments array to set editing: true for this comment
+    setComments(prevComments => prevComments.map(c => 
+      c.id === comment.id ? { ...c, editing: true } : { ...c, editing: false }
     ));
+    
+    // Close the menu
     handleClose();
   };
 
   const handleCancelEdit = (comment: Comment) => {
-    setComments(comments.map(c => 
+    setComments(prevComments => prevComments.map(c => 
       c.id === comment.id ? { ...c, editing: false } : c
     ));
+    setEditing(''); // Clear the editing text
   };
 
   const handleUpdateComment = async (comment: Comment) => {
     try {
       const ref = doc(
         firestore_reference,
-        `tutorials/${firestore_path.replaceAll('/', '-').slice(0, firestore_path.replaceAll('/', '-').length - 1)}/comments/${comment.id}`
+        `tutorials/${video_name.replaceAll('/', '-')}/comments/${comment.id}`
       );
       
-      await updateDoc(ref, { ...comment, 'comment': editing, 'editing': false });
-      setComments(comments.map(c => 
+      // Update Firestore
+      await updateDoc(ref, { comment: editing, editing: false });
+      
+      // Update local state only - don't refetch everything
+      setComments(prevComments => prevComments.map(c => 
         c.id === comment.id ? { ...c, comment: editing, editing: false } : c
       ));
+      
+      // Also update the data.comments to keep them in sync
+      setData(prevData => ({
+        ...prevData,
+        comments: prevData.comments.map(c => 
+          c.id === comment.id ? { ...c, comment: editing, editing: false } : c
+        )
+      }));
+      
+      setEditing(''); // Clear the editing text
     } catch (e) {
       console.error("Error updating comment:", e);
     }
@@ -336,36 +339,80 @@ const video_name = pathname.replace("%20"," ");
     try {
       const comment_reference = doc(
         firestore_reference,
-        `tutorials/${firestore_path.replaceAll('/', '-').slice(0, firestore_path.replaceAll('/', '-').length - 1)}/comments/${comment.id}`
+        `tutorials/${video_name.replaceAll('/', '-')}/comments/${comment.id}`
       );
       
       await deleteDoc(comment_reference);
-      const updatedData = await getdata(pathname);
-      setData({...data,...updatedData});
+      
+      // Update local state instead of refetching
+      setComments(prevComments => prevComments.filter(c => c.id !== comment.id));
+      setData(prevData => ({
+        ...prevData,
+        comments: prevData.comments.filter(c => c.id !== comment.id)
+      }));
+      
       handleClose();
     } catch (e) {
       console.error("Error deleting comment:", e);
     }
   };
-//console.log(comments)
-if (loading || status.localeCompare('loading')==0) {
-  return <div>Loading user...</div>;
-}
 
-// Handle no user
-if (!user || !user.id) {
-  return <div>Please sign in to view this content.</div>;
-}
+  const handleAddComment = async () => {
+    if (!comment.trim()) return; // Don't add empty comments
+    
+    try {
+      const comments_reference = collection(
+        firestore_reference,
+        `tutorials/${video_name.replaceAll('/', '-')}/comments`
+      );
+        
+      const temp = new Date();
+      const date = `${(temp.getMonth()+1).toString().padStart(2,'0')}/${(temp.getDate()).toString().padStart(2,'0')}/${temp.getFullYear()} ${temp.getHours()}:${temp.getMinutes()}`;
+       
+      const newCommentRef = await addDoc(comments_reference, {
+        'commenter': user._document.data.value.mapValue.fields.name.stringValue,
+        'comment': comment,
+        'date': date,
+        'editing': false
+      });
+      
+      // Add the new comment to local state instead of refetching everything
+      const newComment = {
+        id: newCommentRef.id,
+        commenter: user._document.data.value.mapValue.fields.name.stringValue,
+        comment: comment,
+        date: date,
+        editing: false
+      };
+      
+      setComments(prevComments => [...prevComments, newComment]);
+      setData(prevData => ({
+        ...prevData,
+        comments: [...prevData.comments, newComment]
+      }));
+      
+      setComment(''); // This won't trigger a refetch anymore
+      
+    } catch (e) {
+      console.error("Error adding comment:", e);
+    }
+  };
+
+  if (loading || status.localeCompare('loading') == 0) {
+    return <div>Loading user...</div>;
+  }
+
+  // Handle no user
+//  if ((!user || !user.id)&& !loading) {
+//    return <div>Please sign in to view this content.</div>;
+ // }
 
   return data.likes >= 0 ? (
     <div className='main'>
-       
       <div className='title'> {tutorial_type} trick</div>
       
       <div className='content'>
-        
         <div className='left'>
-          
           <div className='lefttitle'> {tutorial.charAt(0).toUpperCase()+tutorial.slice(1)}</div>
           {url && (
             <div className='video'>
@@ -373,60 +420,35 @@ if (!user || !user.id) {
             </div>
           )}
           
-          <div className='buttons'  style={{ display: 'flex', flexDirection: 'row', width:'100%' }}>
-            
+          <div className='buttons' style={{ display: 'flex', flexDirection: 'row', width:'100%' }}>
             <div style={{display:'flex',flexDirection:'row' ,alignItems:'center'}}>
-              {data.likes >= 0 && <h1 style={{ fontSize: '20px', marginRight:'2px' }}> {data.likes} </h1>}
+              {data.likes > 0 && <h1 style={{ fontSize: '20px', marginRight:'2px' }}> {data.likes} </h1>}
               <div onClick={()=> updatelike('like')}>
                 { 
                   user.data().liked.includes(video_name) ?
                   <FavoriteIcon  style={{color:'red'}} fontSize='large' /> :
                   <FavoriteBorderIcon fontSize='large' />
-                  
                 }
-                
               </div>
-              
             </div>
 
             <div onClick={() => { updatelike('bookmark') }}>
               {
-                
                 user.data().bookmarked.includes(video_name) ?
                 <BookmarkIcon fontSize='large' /> :
                 <BookmarkBorderIcon fontSize='large' />
-                
               }
             </div>
 
-             <div  onClick={() => { updatelike('complete') }}>
+            <div onClick={() => { updatelike('complete') }}>
               {
-                
                 user.data().completed.includes(video_name) ?
                 <CheckCircleIcon style={{color:'green'}} fontSize='large' /> :
-                < CheckCircleOutlineIcon fontSize='large' />
-                
+                <CheckCircleOutlineIcon fontSize='large' />
               }
             </div>
-           
-
-           {// <ShareIcon fontSize='large'></ShareIcon> 
-           }
           </div>
-          
         </div>
-      
-        {
-/*
-        <div className='right'>
-          <div className="righttitle" style={{paddingBottom:'20px' }}>Advices</div>
-          <ul style={{display: 'flex', flexDirection: 'column',alignItems: 'center'}}>
-            <li className="advice"> Lift the ball as much as you can </li>
-            <li className="advice"> Avoid making the first rev too low or too high</li>
-          </ul>
-        </div>
-        */
-        }
       </div>
         
       <div className='wrapper'>
@@ -440,66 +462,66 @@ if (!user || !user.id) {
                 </div>
 
                 <div>
-                 {!c.editing ? (
-  <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: "flex-start" }}>
-      <div>{c.comment}</div>
-      <div className='date'>{c.date}</div>
-    </div>
-    <Button
-      id={`comment-menu-${c.id}`}
-      aria-controls={open && selectedComment?.id === c.id ? `comment-menu-${c.id}` : undefined}
-      aria-haspopup="true"
-      aria-expanded={open && selectedComment?.id === c.id ? 'true' : undefined}
-      variant="contained"
-      disableElevation
-      onClick={(event) => handleClick(event, c)}
-    >
-      <MoreVertIcon />
-    </Button>
-  </div>
-) : (
-  <div style={{
-    padding: '15px',
-    backgroundColor: '#f5f5f5',
-    borderRadius: '8px',
-    border: '1px solid #e0e0e0',
-    margin: '10px 0'
-  }}>
-    <textarea
-      style={{
-        resize: 'vertical',
-        minHeight: '100px',
-        width: '100%',
-        padding: '12px',
-        fontSize: '16px',
-        border: '2px solid #1976d2',
-        borderRadius: '6px',
-        marginBottom: '10px'
-      }}
-      value={editing}
-      onChange={(event) => updateEditing(event.target.value)}
-      autoFocus
-    />
-    <div style={{ display: 'flex', gap: '10px' }}>
-      <Button 
-        variant='outlined' 
-        onClick={() => handleCancelEdit(c)}
-        style={{ flex: 1 }}
-      >
-        Cancel
-      </Button>
-      <Button 
-        variant='contained' 
-        color='primary'
-        onClick={() => handleUpdateComment(c)}
-        style={{ flex: 1 }}
-      >
-        Update
-      </Button>
-    </div>
-  </div>
-)}
+                  {!c.editing ? (
+                    <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', alignItems: "flex-start" }}>
+                        <div>{c.comment}</div>
+                        <div className='date'>{c.date}</div>
+                      </div>
+                      <Button
+                        id={`comment-menu-${c.id}`}
+                        aria-controls={open && selectedComment?.id === c.id ? `comment-menu-${c.id}` : undefined}
+                        aria-haspopup="true"
+                        aria-expanded={open && selectedComment?.id === c.id ? 'true' : undefined}
+                        variant="contained"
+                        disableElevation
+                        onClick={(event) => handleClick(event, c)}
+                      >
+                        <MoreVertIcon />
+                      </Button>
+                    </div>
+                  ) : (
+                    <div style={{
+                      padding: '15px',
+                      backgroundColor: '#f5f5f5',
+                      borderRadius: '8px',
+                      border: '1px solid #e0e0e0',
+                      margin: '10px 0'
+                    }}>
+                      <textarea
+                        style={{
+                          resize: 'vertical',
+                          minHeight: '100px',
+                          width: '100%',
+                          padding: '12px',
+                          fontSize: '16px',
+                          border: '2px solid #1976d2',
+                          borderRadius: '6px',
+                          marginBottom: '10px'
+                        }}
+                        value={editing}
+                        onChange={(event) => updateEditing(event.target.value)}
+                        autoFocus
+                      />
+                      <div style={{ display: 'flex', gap: '10px' }}>
+                        <Button 
+                          variant='outlined' 
+                          onClick={() => handleCancelEdit(c)}
+                          style={{ flex: 1 }}
+                        >
+                          Cancel
+                        </Button>
+                        <Button 
+                          variant='contained' 
+                          color='primary'
+                          onClick={() => handleUpdateComment(c)}
+                          style={{ flex: 1 }}
+                        >
+                          Update
+                        </Button>
+                      </div>
+                    </div>
+                  )}
 
                   <StyledMenu
                     id={`comment-menu-${c.id}`}
@@ -507,7 +529,7 @@ if (!user || !user.id) {
                       'aria-labelledby': `comment-menu-${c.id}`,
                     }}
                     anchorEl={anchorEl}
-                    open={open && selectedComment?.id === c.id}
+                    open={Boolean(anchorEl)}
                     onClose={handleClose}
                   >
                     <MenuItem onClick={() => handleEditComment(c)} disableRipple>
@@ -524,54 +546,26 @@ if (!user || !user.id) {
             ))}
 
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-               <textarea
-    className="comment-input" // Better class naming
-    placeholder="Enter your comment..."
-    value={comment}
-    onChange={(e) => setComment(e.target.value)}
-    style={{width:'80%',
-   
-      padding: '10px',
-      borderRadius: '8px',
-      border: '1px solid #ccc',
-      resize: 'none', // Disables resizing
-      minHeight: '40px',
-      outline: 'none',
-      transition: 'border 0.2s',
-      fontFamily: 'inherit',
-      fontSize: '14px',
-      ':focus': { // If using CSS-in-JS (e.g., styled-components)
-        border: '1px solid #007bff',
-      },
-    }}
-  />
+              <textarea
+                className="comment-input"
+                placeholder="Enter your comment..."
+                value={comment}
+                onChange={(e) => setComment(e.target.value)}
+                style={{
+                  width:'80%',
+                  padding: '10px',
+                  borderRadius: '8px',
+                  border: '1px solid #ccc',
+                  resize: 'none',
+                  minHeight: '40px',
+                  outline: 'none',
+                  transition: 'border 0.2s',
+                  fontFamily: 'inherit',
+                  fontSize: '14px',
+                }}
+              />
               <div>
-                <Button variant='contained' onClick={async () => {
-                  try {
-                    const comments_reference = collection(
-                      firestore_reference,
-                      `tutorials/${firestore_path.replaceAll('/', '-').slice(0, firestore_path.replaceAll('/', '-').length - 1)}/comments`
-                    );
-                    var months :{ [key:string]:string}  = {'January':'01', 'February':'02', 'March':'03', 
-                      'April':'04', 'May':'05', 'June':'06', 'July':'07', 'August':'08', 'September':'09', 'October':'10', 'November':'11', 'December':'12'};
-                    var temp = new Date().toString().split(' ').slice(0, -4)
-                    var date =`${months[temp[1]]}/${temp[2]}/${temp[3]} ${temp[4].split(':').slice(0,2).join(':')}`
-                     
-                    
-                    await addDoc(comments_reference, {
-                      'commenter': user.name,
-                      'comment': comment,
-                      'date': date,
-                      
-                      'editing': false
-                    });
-                    setComment('');
-                    const updatedData = await getdata(pathname);
-                    setData({...data,...updatedData});
-                  } catch (e) {
-                    console.error("Error adding comment:", e);
-                  }
-                }}>
+                <Button variant='contained' onClick={handleAddComment}>
                   Comment
                 </Button>
               </div>

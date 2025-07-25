@@ -173,6 +173,15 @@
   flex-direction: column;
 }
 
+.wrapper{
+  width:100%;
+  display: flex;
+  justify-content: center;
+ 
+  
+  text-align: end;
+}
+
 .commentsection{
   margin-top: 100px;
   width: 80%;
@@ -185,14 +194,6 @@
   margin-bottom: 10px;
   
   
-}
-.wrapper{
-  width:100%;
-  display: flex;
-  justify-content: center;
- 
-  
-  text-align: end;
 }
 
 .settingsform{

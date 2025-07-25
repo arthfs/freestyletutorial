@@ -49,7 +49,7 @@ export default function page() {
                 }
                 
             })
-           // console.log(user)
+            console.log(user)
 
         }
     },[user,loading])

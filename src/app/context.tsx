@@ -7,6 +7,7 @@ import { Dosis } from "next/font/google";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 
+
 const UserContext = createContext();
 
 export default function ContextProvider({ children }) {
@@ -41,13 +42,19 @@ export default function ContextProvider({ children }) {
     
     if (session?.user?.email) {
       get_user_data(session.user.email);
+      setLoading
     } else {
       setLoading(false);
     }
   }, [session, status]);
 
-
-if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0) return <Link href='/login'>Please sign in to view this content.</Link>;
+if (Object.keys(user).length == 0 &&  ['loading','authenticated'].includes(status)) return <div> loading</div>
+if (Object.keys(user).length == 0 && status ==='unauthenticated' && pathname.localeCompare('/login')!=0 ) 
+  { console.log(Object.keys(user).length,status)
+    
+    return <Link href='/login'>Please sign in to view this content.</Link>;
+  }
+  console.log(Object.keys(user).length)
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}

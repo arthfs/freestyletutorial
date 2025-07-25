@@ -3,7 +3,7 @@ import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getcontext } from "./context";
-import Image from "next/image";
+
 export default function HomePage() {
   const { data: session, status } = useSession();
   const context = getcontext();
