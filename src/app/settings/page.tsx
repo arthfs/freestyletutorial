@@ -15,7 +15,7 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { signOut } from 'firebase/auth'
 
- var originalname = '',originalphotoname = '', originalphotourl;
+var originalname = '',originalphotoname = '', originalphotourl;
 export default function page() {
     const [profilepicture,setprofilepicture] = useState('')
    
@@ -40,7 +40,7 @@ export default function page() {
             getDoc(ref_user).then((snapshot)=>{
                 if (snapshot.exists())
                 {
-                    //console.log(snapshot.data()['photo'])
+                   
                 setprofilepicture(snapshot.data()['photourl'])
                 setname(snapshot.data()['name'])
                  originalname = snapshot.data()['name']
@@ -49,7 +49,7 @@ export default function page() {
                 }
                 
             })
-            console.log(user)
+           
 
         }
     },[user,loading])
@@ -84,11 +84,11 @@ const handleupload = async (filename:string,file:File)=>{
                     }
                 
                 </div>
-                {
+                { profilepicture &&
                   <div> 
                      <HighlightOffIcon style={{'color':'red'}}></HighlightOffIcon>
                      <button onClick={async()=>{
-                       // console.log(`profilepictures/${originalphotoname}`)
+                    
                           
                             const deleteref = ref(storage_reference,`profilepictures/${originalphotoname}`)
                             await   deleteObject(deleteref)
@@ -107,7 +107,7 @@ const handleupload = async (filename:string,file:File)=>{
                     <label  > Update my picture</label>
                     <div className='inputwrapper'></div>  
                             <input style={{textAlign:'end'}}  type='file' accept='image/*' onChange={(event)=>{
-                            //console.log(event?.target.files[0])
+                          
                             setFile(event?.target.files[0])
                             setprofilepicture(URL.createObjectURL(event?.target.files[0]))}}>
                             </input> 
@@ -117,7 +117,7 @@ const handleupload = async (filename:string,file:File)=>{
 
                  <div className='buttons' style={{}}>     
                     <Button variant='outlined' onClick={async()=>{
-                        //console.log(originalphotoname,file.name)
+                       
                         const user_ref = doc(firestore_reference,`users/${user.id}`)
                        if (name.localeCompare(originalname)!=0) await updateDoc(user_ref,{'name':name})
                         if (file!=null)
@@ -128,9 +128,14 @@ const handleupload = async (filename:string,file:File)=>{
                     
                     }}> Save changes </Button> 
                     <Button variant='outlined' onClick={()=>{
-                        console.log(originalname)
+                       
                         setname(originalname)
+                        try{
                         setprofilepicture(originalphoto)
+                        } catch (e) 
+                      {
+                        setprofilepicture('')
+                      }
                     }}> Cancel </Button> 
                  </div>
                   <div> <Button variant='contained' onClick={handleClickOpen} >Delete my account</Button> </div>

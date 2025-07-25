@@ -22,11 +22,11 @@ export default function SignIn() {
   useEffect (()=>{
     if (status == 'authenticated')
     {
-     // console.log(session)
+    
       test(`${session.user?.email}`).then(async(result)=>{
        if (result.empty)
        {
-       // console.log(session.user)
+
        const reference =  doc(firestore_reference,`/users/${session.user?.id}`)
 
        try
