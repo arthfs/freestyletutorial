@@ -49,12 +49,12 @@ export default function ContextProvider({ children }) {
   }, [session, status]);
 
 if (Object.keys(user).length == 0 &&  ['loading','authenticated'].includes(status)) return <div> loading</div>
-if (Object.keys(user).length == 0 && status ==='unauthenticated' && pathname.localeCompare('/login')!=0 ) 
+if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  ) 
   { 
-    
+  
     return <Link href='/login'>Please sign in to view this content.</Link>;
   }
- 
+
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
