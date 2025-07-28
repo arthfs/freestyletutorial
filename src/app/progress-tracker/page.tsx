@@ -51,7 +51,7 @@ if (!loading)
   return (
     <div>
         <div className='pagetitle'> My progress </div>
-                <div style={{padding:'20px',display:'flex',flexDirection:'column',rowGap:'40px'}}>
+                <div style={{padding:'20px',display:'flex',flexDirection:'column',rowGap:'40px',minWidth:'458px'}}>
                 <div style={{display:'flex',alignSelf:'center'}}>
                     
                         <div style={{marginRight:'20px',width:'40px',alignSelf:'self-start'}}>Lower</div>

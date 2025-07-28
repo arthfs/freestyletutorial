@@ -16,6 +16,7 @@
   display: flex;
   margin-bottom: 20px;
 }
+
 .main
 {
   display: flex;
@@ -75,6 +76,26 @@
   border-color: black;
   border-width: 6px;
   flex-grow: 1;
+  
+}
+
+@media (max-width: 700px)
+{
+  .video {
+    min-width: 300px;
+    align-self: center;
+  }
+  
+  .buttons 
+  {
+    min-width: 300px;
+    align-self: center;
+  }
+  .MuiButton-root 
+  {
+    
+    margin :10px !important;
+  }
 }
 
 .buttons
@@ -117,6 +138,7 @@
 
   
 }
+
 .cell:hover{
   width : 350px;
   border: 5px;
@@ -144,6 +166,7 @@
   object-fit: cover;
 
 }
+
 .name
 {
   border-style: solid;
@@ -158,7 +181,6 @@
   display: grid;
   grid-template: "a a a";
   column-width: 300px;
-  
   row-gap: 40px;
   column-gap: 20px;
   flex-grow: 1;
@@ -167,6 +189,96 @@
   justify-content: space-around;
 }
 
+@media (max-width:600px) 
+{
+  
+  .grid {
+    grid-template :'a';
+  }
+
+.trick {
+  font-size: 11px;
+  width: 600px;
+  justify-content: flex-start;
+}
+
+.pagetitle {
+  font-size: 18px;
+}
+
+.commentbtn .MuiButton-root {
+  width: 10px !important;
+}
+
+.menubtn .MuiButton-root {
+
+
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+
+}
+
+.morebtn .MuiButton-root {
+  width: 10px !important;
+}
+
+.settingsformfield{ 
+  font-size: 10px;
+  width:5%;
+  column-gap: 10px;
+
+  height: 20px; 
+}
+.MuiButton-root 
+{
+  width:300px !important;
+  font-size: 10px !important;
+  height: 40px !important;
+}
+.MuiMenuItem-root {
+  font-size: 9px !important;
+  
+}
+
+.MuiMenu-paper 
+{
+  max-height: 500px !important;
+  
+}
+
+}
+
+@media (min-width:601px) and ( max-width:978px) 
+{
+  .grid {
+    grid-template :'a a'
+  }
+
+.menubtn .MuiButton-root {
+
+
+display: flex;
+flex-direction: row;
+justify-content: space-between;
+
+}
+
+.settingsformfield{ 
+  font-size: 12px;
+
+  height: 10px; 
+}
+
+.MuiButton-root 
+{
+  width:350px !important;
+  font-size: 12px !important;
+  height: 40px !important;
+
+}
+
+}
 .test {
   height: 100vh;
   display: flex;

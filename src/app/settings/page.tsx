@@ -99,7 +99,7 @@ const handleupload = async (filename:string,file:File)=>{
                   </div>
                 }
                 <div className='settingsformfield'> 
-                    <label  > Display name</label>
+                    <label style={{width:'100%'}}  > Display name</label>
                     <div className='inputwrapper'> <input style={{textAlign:'end'}}  type='text' value={name} onChange={()=>{setname(event?.target.value)}} ></input>  </div>
                 </div>
                 
@@ -116,7 +116,7 @@ const handleupload = async (filename:string,file:File)=>{
                </div>
 
                  <div className='buttons' style={{}}>     
-                    <Button variant='outlined' onClick={async()=>{
+                    <Button className='settingsbtn' variant='outlined' onClick={async()=>{
                        
                         const user_ref = doc(firestore_reference,`users/${user.id}`)
                        if (name.localeCompare(originalname)!=0) await updateDoc(user_ref,{'name':name})

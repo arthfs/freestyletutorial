@@ -48,7 +48,7 @@ export default function BasicMenu() {
     return null; // Do not render the menu
   }
   return (
-    <div >
+    <div className='menubtn'  >
       <Button
         id="basic-button"
         aria-controls={open ? 'basic-menu' : undefined}
@@ -58,7 +58,7 @@ export default function BasicMenu() {
       >
        <MenuIcon fontSize='large'/>
       </Button>
-      <Menu
+      <Menu 
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
@@ -68,7 +68,7 @@ export default function BasicMenu() {
         }}
       >
        <Link href={'/'}> <MenuItem onClick={handleClose}>  Home </MenuItem> </Link>
-       <Link href={'/tutorials/lower'}> <MenuItem onClick={handleClose}>  Tuto Lower </MenuItem> </Link>
+       <Link  href={'/tutorials/lower'}> <MenuItem  onClick={handleClose}>  Tuto Lower </MenuItem> </Link>
        <Link href={'/tutorials/sit'}>  <MenuItem onClick={handleClose}> Tuto Sit </MenuItem> </Link>
        <Link href={'/tutorials/upper'}>  <MenuItem onClick={handleClose}> Tuto Upper </MenuItem> </Link>
        <Link href={'/progress-tracker'}>  <MenuItem onClick={handleClose}> My progress </MenuItem> </Link>

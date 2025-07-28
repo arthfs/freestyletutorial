@@ -461,7 +461,7 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
                   <div> {`@${c.commenter}`} </div>
                 </div>
 
-                <div>
+                <div className="morebtn">
                   {!c.editing ? (
                     <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                       <div style={{ display: 'flex', flexDirection: 'column', alignItems: "flex-start" }}>
@@ -564,8 +564,8 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
                   fontSize: '14px',
                 }}
               />
-              <div>
-                <Button variant='contained' onClick={handleAddComment}>
+              <div className="commentbtn">
+                <Button  variant='contained' onClick={handleAddComment}>
                   Comment
                 </Button>
               </div>
