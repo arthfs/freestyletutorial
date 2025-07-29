@@ -6,7 +6,9 @@
 {
   font-size: 40px;
   align-self: center;
-  margin : 10px;
+  margin-bottom : 5%;
+
+  
 }
 
 .pagetitle{
@@ -14,7 +16,7 @@
   justify-content: center;
   width:100%;
   display: flex;
-  margin-bottom: 20px;
+  margin-bottom: 5%;
 }
 
 .main
@@ -37,6 +39,7 @@
   flex-direction: column;
  
 }
+
 .advice{
   font-size: 18px;
   font-style: italic;
@@ -175,6 +178,15 @@
   text-align: center;
 }
 
+.cell1{
+  height: 450px;
+  width: 400px;
+  border-width: 2px;
+  border-color: aqua;
+  border-style: solid;
+}
+
+
 .grid{
  
   height: fit-content;
@@ -189,21 +201,42 @@
   justify-content: space-around;
 }
 
+
 @media (max-width:600px) 
 {
   
   .grid {
     grid-template :'a';
   }
+  
+  .cell1
+  {
+    height: 250px;
+    width:250px;
+
+  }
+  
+.homepage 
+{
+  background-position: center;
+}
+
+.MuiDialog-paper {
+  width:50%;
+  height: 30%;
+}
 
 .trick {
-  font-size: 11px;
+  font-size: 0.6rem;
   width: 600px;
   justify-content: flex-start;
 }
 
-.pagetitle {
+.pagetitle,.title {
   font-size: 18px;
+}
+.lefttitle {
+  font-size: 14px;
 }
 
 .commentbtn .MuiButton-root {
@@ -247,6 +280,26 @@ justify-content: space-between;
   
 }
 
+
+.requesttrick .MuiDialog-paper 
+{
+  height: 250px !important;
+  width: 350px !important;
+  align-self: center;
+  
+  
+}
+
+.logoutdialog .MuiDialog-paper 
+{
+  height: 200px !important;
+  width: 250px !important;
+  align-self: center;
+
+  
+}
+
+
 }
 
 @media (min-width:601px) and ( max-width:978px) 
@@ -254,6 +307,31 @@ justify-content: space-between;
   .grid {
     grid-template :'a a'
   }
+
+.requesttrick .MuiDialog-paper 
+{
+  height: 250px !important;
+  width: 450px !important;
+  align-self: center;
+  
+  
+}
+
+    .cell1
+  {
+    height: 300px;
+    width:300px;
+
+  }
+.requesttrick 
+{
+  height: 800px !important;
+  
+}
+.MuiDialog-paper {
+  width:40%;
+  height: 30%;
+}
 
 .menubtn .MuiButton-root {
 
@@ -272,7 +350,7 @@ justify-content: space-between;
 
 .MuiButton-root 
 {
-  width:350px !important;
+  width:110px !important;
   font-size: 12px !important;
   height: 40px !important;
 
@@ -383,14 +461,6 @@ width: 100%;
 
 }
 
-.cell1{
-  height: 400px;
-  width: 400px;
-  background-color: yellow;
-  border-width: 2px;
-  border-color: aqua;
-  border-style: solid;
-}
 
 .test2{
   height: 100%;

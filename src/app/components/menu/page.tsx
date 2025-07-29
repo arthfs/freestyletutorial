@@ -90,7 +90,7 @@ export default function BasicMenu() {
       </Menu>
        <React.Fragment>
      
-            <Dialog
+            <Dialog className='logoutdialog'
               open={opendialog}
               onClose={handleClosedialog}
               aria-labelledby="alert-dialog-title"

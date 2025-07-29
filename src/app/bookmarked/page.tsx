@@ -61,11 +61,13 @@ return (
     <div className='bookmarkscontainer'>
       {bookmarks.map((video) => {
         const [folder, filename] = video.split('/');
-        return (
-          <div className='cell1' key={video}> {/* Use full video as key for uniqueness */}
+        return (   <div key={video}>
+                     <div style={{display:'flex',justifyContent:'center'}}>{filename.charAt(0).toLocaleUpperCase()+filename.substring(1)}</div>
+           
+          <div className='cell1' > {/* Use full video as key for uniqueness */}
+           
             <Link href={`tutorials/${video}`}> 
-              <div style={{display:'flex',justifyContent:'center'}}>{filename}</div>
-              {reference[video] && (
+        {reference[video] && (
                 <Image 
                   className='test2' 
                   unoptimized ={true}
@@ -82,28 +84,14 @@ return (
               )}
             </Link> 
           </div>
+      </div>    
         );
       })}
+      
     </div>
+    
   </div>
 );
 
-  return (
-    <div>
-        <div className='pagetitle'>Bookmarked</div>
-        <div className='bookmarkscontainer'>
-        {
-            bookmarks.map((video)=>{ return (
-            <div className='cell1' key={video.split('/')[1]}>
-               <Link href={`tutorials/${video}`}> 
-                   <div> {video.split('/')[1]} </div>
-                    <Image className='test2' src={reference[video]} width={50} height={50} alt='image'></Image>
-               
-               </Link> 
-                
-                </div>)  })
-        }
-        </div>
-    </div>
-  )
+ 
 }

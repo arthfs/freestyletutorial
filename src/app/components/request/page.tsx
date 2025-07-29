@@ -69,7 +69,7 @@ React.useEffect(()=>{
       <h1  onClick={handleClickOpen}>
         Request a tutorial
       </h1>
-      <Dialog
+      <Dialog className='requesttrick'
         open={open}
         onClose={handleClose}
         PaperProps={{
