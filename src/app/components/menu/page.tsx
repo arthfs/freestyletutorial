@@ -8,8 +8,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 import { signOut } from 'next-auth/react';
 import { usePathname } from "next/navigation";
 import FormDialog from '../request/page';
-import AlertDialog from './alertdialog/page';
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -121,12 +119,3 @@ export default function BasicMenu() {
   );
 }
 
-/*
-  <form action={ async()=>  {
-            await signOut()
-         }} 
-            
-        >
-            <button type='submit'> Logout </button>
-        </form>
-*/

@@ -1,14 +1,14 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection, doc, getDoc, getDocs, limit, onSnapshot, query, where } from "firebase/firestore";
+import { collection, doc, DocumentData, getDoc, getDocs, limit, onSnapshot, query, QueryDocumentSnapshot, where } from "firebase/firestore";
 import { firestore_reference } from "./firebase"; // Import your firebase config
-import { Dosis } from "next/font/google";
-import { usePathname } from "next/navigation";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 
-const UserContext = createContext();
+const UserContext = createContext({user:new QueryDocumentSnapshot<DocumentData, DocumentData>(),setUser:()=>{}, loading:false});
 
 export default function ContextProvider({ children }) {
   const { data: session, status } = useSession();
@@ -48,19 +48,28 @@ export default function ContextProvider({ children }) {
     }
   }, [session, status]);
 
-if (Object.keys(user).length == 0 &&  ['loading','authenticated'].includes(status)) return <div> loading</div>
-if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  ) 
-  { 
-  
-    return <Link href='/login'>Please sign in to view this content.</Link>;
-  }
 
+if (  ['loading'].includes(status)) return <div> loading</div>
+if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  && status.localeCompare('authenticated')!=0) 
+  { 
+ // console.log(Object.keys(user).length,status)
+    return <div style={{height:'100vh',display:'flex', flexDirection:'column', justifyContent:'center',textAlign:'center'}}> <Link 
+  href="/login"
+  className="text-blue-600 underline hover:text-blue-800"
+>
+  Please sign in to view this content.
+</Link> </div>
+  }
+  //console.log(Object.keys(user).length,status)
+  if ((Object.keys(user).length>0 && status.localeCompare('authenticated')==0) ||(pathname.localeCompare('/login'==0)) )
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
   );
+return <div></div>
 }
 
 export const getcontext = () => useContext(UserContext);
+
 

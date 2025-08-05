@@ -40,7 +40,7 @@ useEffect(() => {
         const urls = await Promise.all(urlPromises);
         
         // Create the mapping object
-        const videoUrlMap = bookmarkedVideos.reduce((acc, video, index) => {
+        const videoUrlMap = bookmarkedVideos.reduce((acc:Record<string,string>, video:string, index:number) => {
           acc[video] = urls[index];
           return acc;
         }, {} as Record<string, string>);
@@ -64,7 +64,7 @@ return (
         return (   <div key={video}>
                      <div style={{display:'flex',justifyContent:'center'}}>{filename.charAt(0).toLocaleUpperCase()+filename.substring(1)}</div>
            
-          <div className='cell1' > {/* Use full video as key for uniqueness */}
+          <div className='cell1' >
            
             <Link href={`tutorials/${video}`}> 
         {reference[video] && (

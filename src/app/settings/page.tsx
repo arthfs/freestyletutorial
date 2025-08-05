@@ -3,9 +3,9 @@ import { Button } from '@mui/material'
 import React, { useEffect, useState } from 'react'
 import { firestore_reference,storage_reference} from '../firebase'
 import { getcontext } from '../context'
-import { deleteDoc, Firestore } from 'firebase/firestore'
+import { deleteDoc } from 'firebase/firestore'
 import { getDoc,doc,updateDoc } from 'firebase/firestore'
-import { StorageReference,uploadBytes,ref, getDownloadURL, deleteObject } from 'firebase/storage'
+import { uploadBytes,ref, getDownloadURL, deleteObject } from 'firebase/storage'
 import Image from 'next/image'
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import Dialog from '@mui/material/Dialog';
@@ -13,9 +13,10 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { signOut } from 'firebase/auth'
+import { signOut } from 'next-auth/react'
+import AutohideSnackbar from '../components/snackbar/page'
 
-var originalname = '',originalphotoname = '', originalphotourl;
+var originalname = '',originalphotoname = '', originalphotourl:string;
 export default function page() {
     const [profilepicture,setprofilepicture] = useState('')
    
@@ -24,9 +25,13 @@ export default function page() {
     const user_ref = doc(firestore_reference,`users/${user.id}`)
     const [file, setFile] = useState<File | null>(null);
     const [opendialog, setOpen] = React.useState(false);
-    
+    const [opened,setopened] = useState(false)
+    const updateopen = ()=>{setopened(true)
+      console.log(opened)
+    }
       const handleClickOpen = () => {
         setOpen(true);
+        
       };
     
       const handleClosedialog = () => {
@@ -100,16 +105,19 @@ const handleupload = async (filename:string,file:File)=>{
                 }
                 <div className='settingsformfield'> 
                     <label style={{width:'100%'}}  > Display name</label>
-                    <div className='inputwrapper'> <input style={{textAlign:'end'}}  type='text' value={name} onChange={()=>{setname(event?.target.value)}} ></input>  </div>
+                    <div className='inputwrapper'> <input style={{textAlign:'end'}}  type='text' value={name} onChange={(event)=>{ if (event.target!=null) setname(event?.target.value)}} ></input>  </div>
                 </div>
                 
                 <div className='settingsformfield'>
                     <label  > Update my picture</label>
                     <div className='inputwrapper'></div>  
                             <input style={{textAlign:'end'}}  type='file' accept='image/*' onChange={(event)=>{
-                          
+                            if (event.target.files!=null) 
+                            {
                             setFile(event?.target.files[0])
-                            setprofilepicture(URL.createObjectURL(event?.target.files[0]))}}>
+                            setprofilepicture(URL.createObjectURL(event?.target.files[0]))
+                            }
+                           }}>
                             </input> 
                     </div>
                
@@ -119,19 +127,27 @@ const handleupload = async (filename:string,file:File)=>{
                     <Button className='settingsbtn' variant='outlined' onClick={async()=>{
                        
                         const user_ref = doc(firestore_reference,`users/${user.id}`)
-                       if (name.localeCompare(originalname)!=0) await updateDoc(user_ref,{'name':name})
+                       if (name.localeCompare(originalname)!=0)
+                        { 
+                          await updateDoc(user_ref,{'name':name})
+                           updateopen()
+                        }
                         if (file!=null)
                         {
-                            if (originalname.localeCompare(file.name)!=0)  handleupload(file?.name,file)
+                            if (originalname.localeCompare(file.name)!=0)  {
+                              handleupload(file?.name,file)
+                               updateopen()
+                            }
                         }
-                       
+                      
                     
                     }}> Save changes </Button> 
+                    <AutohideSnackbar opened = {opened} onClose={()=>{setopened(false)}} notif={"Changes made successfully"}></AutohideSnackbar>
                     <Button variant='outlined' onClick={()=>{
                        
                         setname(originalname)
                         try{
-                        setprofilepicture(originalphoto)
+                        setprofilepicture(originalphotourl)
                         } catch (e) 
                       {
                         setprofilepicture('')

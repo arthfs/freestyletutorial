@@ -9,7 +9,6 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import ShareIcon from '@mui/icons-material/Share';
 import { doc, updateDoc, arrayRemove, arrayUnion, getDoc, collection, getDocs, addDoc, deleteDoc } from 'firebase/firestore';
 import { firestore_reference, storage_reference } from '../../firebase';
 import { getDownloadURL, listAll, ref } from 'firebase/storage';
@@ -19,7 +18,6 @@ import EditIcon from '@mui/icons-material/Edit';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
-import { BorderAll } from "@mui/icons-material";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
@@ -329,7 +327,7 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
         )
       }));
       
-      setEditing(''); // Clear the editing text
+      setEditing(''); 
     } catch (e) {
       console.error("Error updating comment:", e);
     }

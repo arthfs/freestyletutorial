@@ -13,7 +13,8 @@ export default function HomePage() {
   // Optional: Keep your auth redirect logic
   useEffect(() => {
     if (status === "loading") return;
-    if (!session || Object.keys(user).length == 0) {
+    if (!session || (Object.keys(user).length == 0 && !['loading','authenticated'].includes(status))) {
+      console.log('here',!session,status)
       router.push("/auth/signin");
     }
   }, [session, status, router]);

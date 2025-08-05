@@ -1,16 +1,27 @@
 'use client';
 import React, { useEffect, useState } from 'react'
 import { getcontext } from '../context';
-import { doc, getDoc, getDocs } from 'firebase/firestore';
+import { doc, DocumentData, getDoc, getDocs, QueryDocumentSnapshot } from 'firebase/firestore';
 import { firestore_reference } from '../firebase';
-import { Firestore } from 'firebase/firestore';
+
 import { collection } from 'firebase/firestore';
+type TutorialState = {
+  lower: QueryDocumentSnapshot<DocumentData, DocumentData>[];
+  sit: QueryDocumentSnapshot<DocumentData, DocumentData>[];
+  upper: QueryDocumentSnapshot<DocumentData, DocumentData>[];
+};
+
+
 
 export default function Progress() {
  const achieved = 40, total=300, height = 20;
  const {user,loading} = getcontext();
- const [completed,setcompleted] = useState({'lower':[],'sit':[],'upper':[]})
- const [tutorial,settutorial] = useState({'lower':[],'sit':[],'upper':[]})
+ const [completed,setcompleted] = useState<TutorialState> ({'lower':[],'sit':[],'upper':[]})
+ const [tutorial, settutorial] = useState<TutorialState>({
+  lower: [],
+  sit: [],
+  upper: []
+});
 
  useEffect(()=>{
     if (!loading)
@@ -101,6 +112,3 @@ if (!loading)
 }
 
 
-//create table students( sid int primary key auto_increment , name varchar(20),age int, gpa  float);
-//create table courses (cid  varchar (20) primary key , name varchar (20), dept varchar (20) );
-//create table enrolledin (sid int ,cid  varchar(20) ,grade float,primary key(sid,cid), foreign key (sid) references students (sid),foreign key (cid) references courses (cid));

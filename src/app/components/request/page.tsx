@@ -14,6 +14,7 @@ import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
+interface userinterface {}
 export default function FormDialog() {
   const [opensnackbar, setOpensnackbar] = React.useState(false);
 
@@ -50,7 +51,7 @@ const action = (
 
   const [open, setOpen] = React.useState(false);
   const [trick,settrick] = React.useState('')
- const {user} = getcontext()
+ const {user} = getcontext() 
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -117,7 +118,7 @@ React.useEffect(()=>{
          { 
             await addDoc(reference ,
                 {
-                'name':user.name, // user's username
+                'name':user._document.data.value.mapValue.fields.name,
                 'trick': trick ,
                 'date': date.toLocaleDateString()+' '+ date.toLocaleTimeString()
                 })
@@ -127,6 +128,7 @@ React.useEffect(()=>{
          catch(e) 
          {
             console.log(e)
+           
          }
           
           }}>Submit</Button>
