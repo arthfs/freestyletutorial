@@ -1,6 +1,6 @@
 "use client";
 import { useSession } from "next-auth/react";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, ReactNode, useContext, useEffect, useState } from "react";
 import { collection,  DocumentData,  limit, onSnapshot, query,  where } from "firebase/firestore";
 import { firestore_reference } from "./firebase"; // Import your firebase config
 
@@ -21,7 +21,7 @@ const UserContext = createContext<UserContextType>({
   loading: false
 });
 
-export default function ContextProvider({ children }) {
+export default function ContextProvider({ children }:{children:ReactNode}) {
   const { data: session, status } = useSession();
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
