@@ -9,14 +9,14 @@ import { usePathname } from "next/navigation";
 
 
 type UserContextType = {
-  user: DocumentData | null;  // Use DocumentData or your custom type
-  setUser: (user: DocumentData | null) => void;
+  user: DocumentData ;  // Use DocumentData or your custom type
+  setUser: (user: DocumentData ) => void;
   loading: boolean;
 };
 
 // Initialize with null/default values
 const UserContext = createContext<UserContextType>({
-  user: null,  // Instead of trying to instantiate a snapshot
+  user: {},  // Instead of trying to instantiate a snapshot
   setUser: () => {},
   loading: false
 });
@@ -73,7 +73,8 @@ if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  && sta
   }
   
   if ((Object.keys(user).length>0 && status.localeCompare('authenticated')==0) ||(pathname.localeCompare('/login')==0) )
-  return (
+   return (
+    
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
     </UserContext.Provider>
