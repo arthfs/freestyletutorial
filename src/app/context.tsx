@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection,  DocumentData,  limit, onSnapshot, query, QueryDocumentSnapshot, where } from "firebase/firestore";
+import { collection,  DocumentData,  limit, onSnapshot, query,  where } from "firebase/firestore";
 import { firestore_reference } from "./firebase"; // Import your firebase config
 
 import Link from "next/link";
