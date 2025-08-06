@@ -87,7 +87,7 @@ export default function Page({ params }: { params: Promise<{ dynamic?: string[] 
     return <div>Loading...</div>;
   }
 
-  const segments = resolvedParams.dynamic?.join("/") || "No segments provided";
+ 
 
   if (!resolvedParams.dynamic || resolvedParams.dynamic.length > 2) {
     notFound();
@@ -196,10 +196,10 @@ function Tutorial_page({ tutorial, path }: { tutorial: string, path: string }) {
     setAnchorEl(null);
   };
 
-  var pathname = path;
+  const pathname = path;
   const tutorial_type = path.split('/')[0].slice(0, 1).toUpperCase() + path.split('/')[0].slice(1);
   const [comment, setComment] = useState('');
-  const firestore_path = pathname.split('/').slice(0, 2).join('/') + '/' + pathname.split('/').slice(2).join('-');
+
   const [url, setUrl] = useState('');
   
   const [data, setData] = useState<{

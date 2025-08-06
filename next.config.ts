@@ -3,7 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
 };
-module.exports = {
+module.exports = { 
   images: {
     domains: ['firebasestorage.googleapis.com', 'lh3.googleusercontent.com', // Google profile images
       'lh4.googleusercontent.com', // Alternative Google domain

@@ -14,7 +14,7 @@ type TutorialState = {
 
 
 export default function Progress() {
- const achieved = 40, total=300, height = 20;
+ const  total=300, height = 20;
  const {user,loading} = getcontext();
  const [completed,setcompleted] = useState<TutorialState> ({'lower':[],'sit':[],'upper':[]})
  const [tutorial, settutorial] = useState<TutorialState>({
@@ -31,10 +31,10 @@ export default function Progress() {
         getDoc(reference_user).then((snapshot)=>{
             if (snapshot.exists())
             {
-            var docs = snapshot.data().completed
-            var lower = docs.filter((doc:string)=> doc.startsWith('lower'))
-            var sit = docs.filter((doc:string )=> doc.startsWith('sit'))
-            var upper = docs.filter((doc : string)=> doc.startsWith('upper'))
+            const docs = snapshot.data().completed
+            const lower = docs.filter((doc:string)=> doc.startsWith('lower'))
+            const sit = docs.filter((doc:string )=> doc.startsWith('sit'))
+            const upper = docs.filter((doc : string)=> doc.startsWith('upper'))
             
             setcompleted({'lower':lower,'upper':upper,'sit':sit})
             }
@@ -44,21 +44,21 @@ export default function Progress() {
 
         getDocs(reference).then((result)=>{
         
-            var docs = result.docs
-            var lower = docs.filter((doc)=> doc.id.startsWith('lower'))
-            var sit = docs.filter((doc)=> doc.id.startsWith('sit'))
-            var upper = docs.filter((doc)=> doc.id.startsWith('upper'))
+            const docs = result.docs
+            const lower = docs.filter((doc)=> doc.id.startsWith('lower'))
+            const sit = docs.filter((doc)=> doc.id.startsWith('sit'))
+            const upper = docs.filter((doc)=> doc.id.startsWith('upper'))
 
             settutorial({'lower':lower,'upper':upper,'sit':sit})
            
         })
   
     }
- },[])
+ },[loading, user.id])
  if (loading) return <div>loading</div>
 if (!loading)
 {
-    
+    console.log(completed['sit'].length)
   return (
     <div>
         <div className='pagetitle'> My progress </div>
@@ -69,12 +69,12 @@ if (!loading)
                         
                     
                         <div style={{ width:total,backgroundColor:'#dcdbdbff',height:height,borderStyle:'solid',borderRadius:'10px'}}>
-                            <div style={{width:`${(completed['lower'].length/tutorial['lower'].length) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
+                            <div style={{width:`${(completed['lower'].length!=0? completed['lower'].length/tutorial['lower'].length :0) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
                                 
                             </div>
 
                         </div>
-                        <div style={{marginLeft:'10px'}}>{`${(completed['lower'].length/tutorial['lower'].length *100).toFixed(2)} %`}</div>
+                        <div style={{marginLeft:'10px'}}>{`${(completed['lower'].length!=0? completed['lower'].length/tutorial['lower'].length *100:0).toFixed(2)} %`}</div>
                 </div>
 
                  <div style={{display:'flex',alignSelf:'center'}}>
@@ -83,12 +83,12 @@ if (!loading)
                         
                     
                         <div style={{width:total,backgroundColor:'#dcdbdbff',height:height,borderStyle:'solid',borderRadius:'10px'}}>
-                            <div style={{width:`${(completed['upper'].length/tutorial['upper'].length) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
+                            <div style={{width:`${(completed['upper'].length!=0? completed['upper'].length/tutorial['upper'].length :0) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
                                 
                             </div>
 
                         </div>
-                        <div style={{marginLeft:'10px'}}>{`${(completed['upper'].length/tutorial['upper'].length *100).toFixed(2)} %`}</div>
+                        <div style={{marginLeft:'10px'}}>{`${(completed['upper'].length!=0? completed['upper'].length/tutorial['upper'].length *100: 0).toFixed(2)} %`}</div>
                 </div>
 
                  <div style={{display:'flex',alignSelf:'center'}}>
@@ -97,12 +97,12 @@ if (!loading)
                         
                     
                         <div style={{width:total,backgroundColor:'#dcdbdbff',height:height,borderStyle:'solid',borderRadius:'10px'}}>
-                            <div style={{width:`${(completed['sit'].length/tutorial['sit'].length) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
+                            <div style={{width:`${(completed['sit'].length!=0? completed['sit'].length/tutorial['sit'].length:0) *total}px`,backgroundColor:'#08D9D6','height':height,borderLeftStyle:'solid',borderTopLeftRadius:'10px',borderBottomLeftRadius:'10px'}}>
                                 
                             </div>
 
                         </div>
-                        <div style={{marginLeft:'10px'}}>{`${(completed['sit'].length/tutorial['sit'].length *100).toFixed(2)} %`}</div>
+                        <div style={{marginLeft:'10px'}}>{`${(completed['sit'].length!=0? completed['sit'].length/tutorial['sit'].length *100:0).toFixed(2)} %`}</div>
                 </div>
         
         </div>

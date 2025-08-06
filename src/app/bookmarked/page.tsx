@@ -8,7 +8,7 @@ import { ref } from 'firebase/storage'
 import { getDownloadURL } from 'firebase/storage'
 import Image from 'next/image'
 
-export default function page() {
+export default function Page() {
 const {user,loading} = getcontext()
 const [reference, setReference] = useState<Record<string, string>>({});
 const [bookmarks, setBookmarks] = useState<string[]>([]);
@@ -60,7 +60,7 @@ return (
     <div className='pagetitle'>Bookmarked</div>
     <div className='bookmarkscontainer'>
       {bookmarks.map((video) => {
-        const [folder, filename] = video.split('/');
+        const [ filename] = video.split('/');
         return (   <div key={video}>
                      <div style={{display:'flex',justifyContent:'center'}}>{filename.charAt(0).toLocaleUpperCase()+filename.substring(1)}</div>
            

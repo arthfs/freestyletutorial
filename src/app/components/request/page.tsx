@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
@@ -6,7 +7,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { addDoc, collection, CollectionReference, doc } from 'firebase/firestore';
+import { addDoc, collection } from 'firebase/firestore';
 import { firestore_reference } from '@/app/firebase';
 import { getcontext } from '@/app/context';
 
@@ -14,7 +15,7 @@ import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import IconButton from '@mui/material/IconButton';
 import CloseIcon from '@mui/icons-material/Close';
 
-interface userinterface {}
+
 export default function FormDialog() {
   const [opensnackbar, setOpensnackbar] = React.useState(false);
 
@@ -77,9 +78,9 @@ React.useEffect(()=>{
           component: 'form',
           onSubmit: (event: React.FormEvent<HTMLFormElement>) => {
             event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const formJson = Object.fromEntries((formData as any).entries());
-            const email = formJson.email;
+           
+           
+         
             handleClose();
           },
         }}

@@ -1,8 +1,9 @@
+'use client'
 import * as React from 'react';
 import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert'; 
 
-interface Props {
+interface AutohideProps {
   opened: boolean;
   onClose: () => void;
   notif: string;
@@ -16,7 +17,7 @@ export default function AutohideSnackbar({
   notif,
   autoHideDuration = 5000,
   severity = 'success'
-}: Props) {
+}: AutohideProps) {
   const handleClose = (
     event: React.SyntheticEvent | Event,
     reason?: SnackbarCloseReason,

@@ -14,15 +14,15 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { signOut } from 'next-auth/react'
-import AutohideSnackbar from '../components/snackbar/page'
+import AutohideSnackbar from '../components/snackbar'
 
-var originalname = '',originalphotoname = '', originalphotourl:string;
-export default function page() {
+let originalname = '',originalphotoname = '', originalphotourl:string;
+export default function Page() {
     const [profilepicture,setprofilepicture] = useState('')
    
     const[name,setname] = useState('')
     const {user,loading} = getcontext()
-    const user_ref = doc(firestore_reference,`users/${user.id}`)
+    const user_ref = doc(firestore_reference,`users/${user!.id}`)
     const [file, setFile] = useState<File | null>(null);
     const [opendialog, setOpen] = React.useState(false);
     const [opened,setopened] = useState(false)
@@ -41,7 +41,7 @@ export default function page() {
 
     useEffect(()=>{
         if (!loading)
-        {   const ref_user = doc(firestore_reference, `/users/${user.id}`);
+        {   const ref_user = doc(firestore_reference, `/users/${user!.id}`);
             getDoc(ref_user).then((snapshot)=>{
                 if (snapshot.exists())
                 {
@@ -78,6 +78,7 @@ const handleupload = async (filename:string,file:File)=>{
     updateDoc(user_ref,{'photoname':filename,'photourl':url})
 
 }
+
   return (
     <div>
         <div className='pagetitle'> Settings</div>
@@ -142,7 +143,7 @@ const handleupload = async (filename:string,file:File)=>{
                       
                     
                     }}> Save changes </Button> 
-                    <AutohideSnackbar opened = {opened} onClose={()=>{setopened(false)}} notif={"Changes made successfully"}></AutohideSnackbar>
+                    <AutohideSnackbar opened = {opened} onClose={()=>{setopened(false) } } severity='success'autoHideDuration={5000} notif={"Changes made successfully"}></AutohideSnackbar>
                     <Button variant='outlined' onClick={()=>{
                        
                         setname(originalname)
@@ -151,6 +152,7 @@ const handleupload = async (filename:string,file:File)=>{
                         } catch (e) 
                       {
                         setprofilepicture('')
+                        console.log(e)
                       }
                     }}> Cancel </Button> 
                  </div>

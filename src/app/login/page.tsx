@@ -1,6 +1,6 @@
 'use client';  // Ensures this is a client-side component
 
-import { addDoc, setDoc, collection, CollectionReference, doc, getDoc, query, where, limit, getDocs } from "firebase/firestore";
+import { setDoc, collection, doc,  query, where, limit, getDocs } from "firebase/firestore";
 import { signIn } from "next-auth/react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -54,10 +54,10 @@ export default function SignIn() {
       
     }
 
-  },[session,status])
+  },[router, session, status])
   const handleSignIn = async (e: { preventDefault: () => void; }) => {
     e.preventDefault(); // Prevent the form from refreshing the page
-    const response = await signIn("google", { redirect:false }).then(()=>{console.log('true')}) // This automatically handles the redirect
+     await signIn("google", { redirect:false }).then(()=>{console.log('true')}) // This automatically handles the redirect
     
  
   };

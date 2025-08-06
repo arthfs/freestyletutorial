@@ -1,14 +1,25 @@
 "use client";
 import { useSession } from "next-auth/react";
 import { createContext, useContext, useEffect, useState } from "react";
-import { collection, doc, DocumentData, getDoc, getDocs, limit, onSnapshot, query, QueryDocumentSnapshot, where } from "firebase/firestore";
+import { collection,  DocumentData,  limit, onSnapshot, query, QueryDocumentSnapshot, where } from "firebase/firestore";
 import { firestore_reference } from "./firebase"; // Import your firebase config
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 
-const UserContext = createContext({user:new QueryDocumentSnapshot<DocumentData, DocumentData>(),setUser:()=>{}, loading:false});
+type UserContextType = {
+  user: DocumentData | null;  // Use DocumentData or your custom type
+  setUser: (user: DocumentData | null) => void;
+  loading: boolean;
+};
+
+// Initialize with null/default values
+const UserContext = createContext<UserContextType>({
+  user: null,  // Instead of trying to instantiate a snapshot
+  setUser: () => {},
+  loading: false
+});
 
 export default function ContextProvider({ children }) {
   const { data: session, status } = useSession();
@@ -42,7 +53,7 @@ export default function ContextProvider({ children }) {
     
     if (session?.user?.email) {
       get_user_data(session.user.email);
-      setLoading
+     
     } else {
       setLoading(false);
     }
@@ -60,8 +71,8 @@ if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  && sta
   Please sign in to view this content.
 </Link> </div>
   }
-  //console.log(Object.keys(user).length,status)
-  if ((Object.keys(user).length>0 && status.localeCompare('authenticated')==0) ||(pathname.localeCompare('/login'==0)) )
+  
+  if ((Object.keys(user).length>0 && status.localeCompare('authenticated')==0) ||(pathname.localeCompare('/login')==0) )
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
       {children}
@@ -70,6 +81,7 @@ if (Object.keys(user).length == 0 && pathname.localeCompare('/login')!=0  && sta
 return <div></div>
 }
 
+// eslint-disable-next-line react-hooks/rules-of-hooks
 export const getcontext = () => useContext(UserContext);
 
 
