@@ -487,6 +487,18 @@ width: 100%;
   overflow: hidden;
   
 }
+
+@media  (max-width:600px)
+{
+  .loginpage
+  {
+    background-size:cover;
+    background-position: center; 
+    
+    
+  }
+}
+
 .loginsection{
   display: flex;
   flex-direction: column;

@@ -61,7 +61,7 @@ export default function SignIn() {
     
  
   };
-
+//console.log()
   return (
     <div className="loginpage">
       <div style={{fontSize:'40px',color:'white',textAlign:'center'}}>Login Page</div>

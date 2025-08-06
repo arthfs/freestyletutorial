@@ -4,6 +4,8 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { getcontext } from "./context";
 
+
+
 export default function HomePage() {
   const { data: session, status } = useSession();
   const context = getcontext();

@@ -1,6 +1,7 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 import { getStorage } from "firebase/storage";
+import { initializeAppCheck, ReCaptchaEnterpriseProvider } from "firebase/app-check";
 
 const firebaseConfig = {
   apiKey: process.env.NEXT_PUBLIC_API_KEY,
@@ -12,6 +13,13 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_MEASUREMENT_ID
 };
 
+
 export const app = initializeApp(firebaseConfig);
+
+ initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(`${process.env.RECAPTCHA_ENTERPRISE_KEY!}`),
+  
+  isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
+});
 export const firestore_reference = getFirestore(app);
 export const storage_reference = getStorage(app);
