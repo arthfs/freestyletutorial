@@ -119,7 +119,7 @@ React.useEffect(()=>{
          { 
             await addDoc(reference ,
                 {
-                'name':user._document.data.value.mapValue.fields.name,
+                'name':user!._document.data.value.mapValue.fields.name,
                 'trick': trick ,
                 'date': date.toLocaleDateString()+' '+ date.toLocaleTimeString()
                 })
