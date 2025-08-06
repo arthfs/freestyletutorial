@@ -7,7 +7,7 @@ import { getcontext } from "./context";
 export default function HomePage() {
   const { data: session, status } = useSession();
   const context = getcontext();
-  const user = context && typeof context === "object" && "user" in context ? (context as { user: {} }).user : {};
+  const user = context && typeof context === "object" && "user" in context ? (context as { user: object }).user : {};
   const router = useRouter();
 
   // Optional: Keep your auth redirect logic
