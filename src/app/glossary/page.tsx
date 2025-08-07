@@ -12,8 +12,8 @@ export default function Glossary() {
 
   return (
     <div>
-      <div className='pagetitle'>   {"Glossary"} </div>
-      <div className='tricks'>
+      <div className="pagetitle">   {"Glossary"} </div>
+      <div className="tricks">
         {
           tricks.map((trick: string)=>  
           <div key={trick} className="trick" >

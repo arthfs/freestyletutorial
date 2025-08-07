@@ -16,8 +16,8 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 
- initializeAppCheck(app, {
-  provider: new ReCaptchaEnterpriseProvider(`${process.env.RECAPTCHA_ENTERPRISE_KEY!}`),
+if (typeof window!== "undefined") initializeAppCheck(app, {
+  provider: new ReCaptchaEnterpriseProvider(`${process.env.NEXT_PUBLIC_RECAPTCHA_ENTERPRISE_KEY!}`),
   
   isTokenAutoRefreshEnabled: true // Set to true to allow auto-refresh.
 });

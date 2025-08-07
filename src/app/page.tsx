@@ -19,8 +19,7 @@ export default function HomePage() {
 
       router.push("/auth/signin");
     }
-  }, [session, status, router, user]);
-
+  }, [session, status, router])
   if (status === "loading") {
     return <div>Loading...</div>;
   }
